@@ -18,7 +18,7 @@ class CommonOperate():
 
     # 定义一个方法，用来实现获取系统当前的时间。 年月日时分秒   24 小时制
     def time_stamp(self):
-        return time.strftime("%Y%m%d_%H-%M-%S")
+        return time.strftime("%Y%m%d_%H_%M_%S")
 
 # 为了避免多次实例化占用内存空间，可以提前实例化一个对象出来。只需要在这里实例化一次即可。
 common_operate_obj = CommonOperate()

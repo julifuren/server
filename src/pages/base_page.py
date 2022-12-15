@@ -23,23 +23,7 @@ class BasePage():
         # print(url)
         self.driver.get(url)
 
-    # # 登录操作并进入首页
-    # def addcookies_login(self):
-    #
-    #     parents_path = dirname(dirname(abspath(__file__)))
-    #
-    #     file_name = parents_path + '/' + 'common/cookies_file.json'
-    #     # print(file_name)
-    #     with open(file_name, 'r') as jsonfile:
-    #         a = json.load(jsonfile)
-    #         print(a)
-    #     for cookies in a:
-    #         self.driver.add_cookie(cookies)
-    #
-    #     time.sleep(1)
-    #     # self.driver.get('https://cloudtest.piesat.cn/engine-server-test/?#/Management')
-    #     self.driver.get('https://cloudtest.piesat.cn/engine-server-test/#/')
-    #     # self.driver.refresh()
+
 
     # 使用显式等待 查找元素。
     def find_element_explicitly(self, locator, timeout=10, poll_frequency=0.5):

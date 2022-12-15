@@ -9,7 +9,7 @@ from time import sleep
 from src.pages.ywgl.type_management.type_management_page import TypeManagementPage
 from src.pages.ywgl.type_management.attribute_page import AttributePage
 from src.common.parse_csv import ParseCsv
-from src.pages.home_page import HomePage
+from src.pages.other.home_page import HomePage
 
 class AddBiaoShi(TypeManagementPage,AttributePage):
 

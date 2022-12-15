@@ -26,7 +26,7 @@ class ParseCsv():
     def read_value_of_csv(self, row_num=None):
         if self.parent_path in ["data", "config"]:
             # 2、打开csv文件（使用open函数）
-            with open(self.csv_path, encoding="utf8") as csvfile:
+            with open(self.csv_path, encoding="GB2312") as csvfile:
                 # 3、读取csv 文件中的内容  （使用到 python自带的一个模块：csv）
                 # 使用csv.reader()方法返回的是一个 csv 阅读器（本质是 迭代器）。
                 reader = csv.reader(csvfile)

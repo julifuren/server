@@ -16,6 +16,7 @@ class HomePage(BasePage):
     # 应用 按钮
     app_btn_ele = (By.XPATH,'//div[@class="nav-list"]//span[text()="应用"]')
 
+    #点击 “应用”按钮
     def click_app_btn(self):
         sleep(2)
         self.find_element_explicitly(self.app_btn_ele).click()

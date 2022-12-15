@@ -11,8 +11,8 @@ from selenium.webdriver.common.by import By
 
 from src.pages.app.app_page import AppPage
 from src.pages.base_page import BasePage
-from src.pages.home_page import HomePage
-from src.pages.login_page import LoginPage
+from src.pages.other.home_page import HomePage
+from src.pages.other.login_page import LoginPage
 
 
 class TaskListPage(BasePage):
@@ -20,6 +20,8 @@ class TaskListPage(BasePage):
     create_task_btn_ele = (By.XPATH,'//div[@class="main-button-bottom"]//span[text()="创建接入任务"]')
     # 入库类型下拉框
     ruku_data_type_dropbox = (By.XPATH,'//form[@class="el-form"]//input')
+    # 任务名称
+    task_name_ele = (By.XPATH,'//p[contains(text(),"任务名称")]/../..//input')
     #文件存储设备
     storage_device = (By.XPATH,'//span[text()="NFS202208080"]')
     # 扫描目录按钮
@@ -30,13 +32,32 @@ class TaskListPage(BasePage):
     datasat_btn_ele =(By.CSS_SELECTOR,'[placeholder="请选择目标数据集"] + [class="el-input-group__append"] [alt]')
     # 数据集弹窗 “我的”
     datasat_popup_mysat_ele = (By.CSS_SELECTOR,'[id="tab-myDatas"]')
+    # 数据集弹窗 “全部”
+    datasat_popup_teamsat_ele = (By.CSS_SELECTOR, '[id="tab-teamDatas"]')
+    # 数据集弹窗 "确定"
+    datasat_popup_confirm_btn_ele = (By.XPATH,'//div[@class="configuration"]/div[5]//span[text()="确 定"]')
+    # 下一步
+    ruku_next_btn_ele = (By.XPATH,'//span[text()="下一步"]')
 
-
+    # 获取创建任务后的任务 状态
+    def get_ruku_status_text(self,taskname):
+        """
+        :param taskname:需要传入任务名称
+        :return:
+        """
+        ruku_status_ele = (By.XPATH,'//div[contains(text(),"{}")]/../..//span[text()="完成"]'.format(taskname))
+        #60s内查找任务的状态为完成的字段
+        return self.find_element_explicitly(ruku_status_ele,60).text
 
 
     # 点击创建接入任务
     def click_create_task_btn(self):
         self.find_element_explicitly(self.create_task_btn_ele).click()
+
+    # 获取创建任务时的名称
+    def get_taskname_text(self):
+        return self.find_element_explicitly(self.task_name_ele).get_attribute('value')
+
 
     #选择入库类型
     def select_ruku_data_type_function(self,datatype):
@@ -51,62 +72,84 @@ class TaskListPage(BasePage):
         self.find_element_explicitly(ruku_data_type_dropbox_value).click()
 
     #选择测试数据路径
-    def choose_data_path_function(self,data_filename,parent_file_name='Ui-test'):
-
-        data_file_name11 = (By.XPATH, '//div[contains(@class,"middle-top")]//div[text()="{}"]'.format(data_filename))
-
+    def choose_data_path_function(self,parent_file_name,son_file_name,data_filename):
+        #一级目录
         parent_file_name11 = (By.XPATH,'//div[@class="middle"]//div[text()="{}"]'.format(parent_file_name))
+        #二级目录
+        son_file_name11 = (By.XPATH,'//div[@class="middle-top flex-space-between"]//div[text()="{}"]'.format(son_file_name))
+        #数据文件名
+        data_file_name11 = (By.XPATH,'//div[@class="middle"]//div[text()="{}"]'.format(data_filename))
 
-        self.find_element_explicitly(self.scan_dircetory_btn_ele).click()
-        aa = self.find_element_explicitly(parent_file_name11)
         # 点击扫描目录按钮
+        self.find_element_explicitly(self.scan_dircetory_btn_ele).click()
 
         # 双击一级目录
-        ActionChains(driver).double_click(aa).perform()
+        aa = self.find_element_explicitly(parent_file_name11)
+        hdmydatasat_name = aa.location_once_scrolled_into_view
+        ActionChains(self.driver).double_click(aa).perform()
+
+        # 双击二级目录
+        bb = self.find_element_explicitly(son_file_name11)
+        hdmydatasat_name1 = bb.location_once_scrolled_into_view
+        ActionChains(self.driver).double_click(bb).perform()
+
+        # 单击数据文件
+        sleep(1)
         self.find_element_explicitly(data_file_name11).click()
+
+        # 点击扫描目录弹窗确定按钮
+        sleep(1)
         self.find_element_explicitly(self.scan_dircetory_popup_btn_ele).click()
 
     #点击存储设备
     def click_storage_device(self):
         self.find_element_explicitly(self.storage_device).click()
 
-    # 选择我的目录名 数据集名
-    def choose_dataset_path_function(self,directory_name,mydatasat_name):
-        """
-        :param mydatasat_name: 我的数据集名称
-        :return:
-        """
+    # 点击数据集弹窗 “我的” 页签
+    def click_datasat_popup_mysat(self):
         # 定位数据集按钮 滑动元素至可见
         ele = self.find_element_explicitly(self.datasat_btn_ele)
         hddatasat = ele.location_once_scrolled_into_view
         ele.click()
-
-        #点击数据集弹窗 “我的” 页签
         self.find_element_explicitly(self.datasat_popup_mysat_ele).click()
-        # self.driver.execute_script("arguments[0].click();", btn)
 
+    # 点击数据集弹窗 “全部” 页签
+    def click_datasat_popup_teamsat(self):
+        # 定位数据集按钮 滑动元素至可见
+        ele = self.find_element_explicitly(self.datasat_btn_ele)
+        hddatasat = ele.location_once_scrolled_into_view
+        ele.click()
+        self.find_element_explicitly(self.datasat_popup_teamsat_ele).click()
+
+
+    # 选择我的目录名 数据集名
+    def choose_dataset_path_function(self,directory_name,mydataset_name):
+        """
+        :param mydataset_name: 我的数据集名称
+        :return:
+        """
+        # 定位数据集按钮 滑动元素至可见
+        # ele = self.find_element_explicitly(self.datasat_btn_ele)
+        # hddatasat = ele.location_once_scrolled_into_view
+        # ele.click()
+        # self.driver.execute_script("arguments[0].click();", btn)
         # 定位目录名称 滑动元素至可见并双击
         dirname = (By.XPATH,'//div[@class="middle"]//div[text()="{}"]'.format(directory_name))
         aa = (self.find_element_explicitly(dirname))
         hdmydatasat_name = aa.location_once_scrolled_into_view
-        ActionChains(driver).double_click(aa).perform()
+        ActionChains(self.driver).double_click(aa).perform()
 
         # 点击数据集
-        satname = (By.XPATH,'//div[@class="middle"]//div[text()="{}"]'.format(mydatasat_name))
+        satname = (By.XPATH,'//div[@class="middle"]//div[text()="{}"]'.format(mydataset_name))
         self.find_element_explicitly(satname).click()
 
+        sleep(1)
+        self.find_element_explicitly(self.datasat_popup_confirm_btn_ele).click()
 
-
-
-
-
-
-
-
-
-
-
-
+    # 点击下一步（入库界面）
+    def click_ruku_next_btn(self):
+        # sleep(1)
+        self.find_element_explicitly(self.ruku_next_btn_ele).click()
 
 
 if __name__ == '__main__':
@@ -114,6 +157,7 @@ if __name__ == '__main__':
     from src.common.parse_csv import ParseCsv
 
     driver = webdriver.Chrome()
+
     test = LoginPage(driver)
     username = ParseCsv("data", "login_data.csv").read_value_of_csv(2)[0]
     passwd = ParseCsv("data", "login_data.csv").read_value_of_csv(2)[1]
@@ -124,8 +168,16 @@ if __name__ == '__main__':
     AppPage(driver).click_data_import_btn()
     test=TaskListPage(driver)
     test.click_create_task_btn()
-    test.select_ruku_data_type_function('正射影像产品')
+    aa = test.get_taskname_text()
+
+    test.select_ruku_data_type_function('矢量要素数据')
     test.click_storage_device()
-    test.choose_data_path_function('region面84.zip')
-    test.choose_dataset_path_function()
+    # test.click_datasat_popup_mysat()
+
+    test.choose_data_path_function('ui-test','region面84.zip')
+    test.click_datasat_popup_mysat()
+    test.choose_dataset_path_function('ui-test','矢量')
+    test.click_ruku_next_btn()
+    dd = test.get_ruku_status_text(aa)
+    # print(dd)
 
