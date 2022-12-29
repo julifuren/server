@@ -9,33 +9,34 @@ from time import sleep
 
 from selenium.webdriver.common.by import By
 
+from src.business.other.login_business import LoginBusiness
 from src.pages.base_page import BasePage
 from selenium import webdriver
-# 成功登录的
-driver =webdriver.Chrome()
-class GetCookies(BasePage):
-    driver.get('https://cloudtest.piesat.cn/sso/account-login?ReturnUrl=https%3A%2F%2Fcloudtest.piesat.cn%2Fengine-server-test%2F&clientId=2231c8b20ba04bdc90590cd19225239b')
-    name = (By.CSS_SELECTOR,'[type="text"][id="input-1"]')
-    pwd = (By.CSS_SELECTOR,'[placeholder="登录密码"]')
-    config_btn = (By.CSS_SELECTOR,'[id="agreement"]')
 
-    def login(self):
-        self.find_element_explicitly(self.name).send_keys('17729546158')
-        self.find_element_explicitly(self.pwd).send_keys('123456')
+from src.pages.other.login_page import LoginPage
 
 
-        input("输入验证码后敲回车")
-        self.find_element_explicitly(self.config_btn).click()
+class GetCookies(LoginBusiness):
+
+    def log(self):
+        self.shoudong_login()
         sleep(4)
-        cks = driver.get_cookies()
+        cks = self.driver.get_cookies()
         jsonCookies = json.dumps(cks)
         with open('cookies_file.json', 'w') as f:
             f.write(jsonCookies)
+        self.driver.quit()
+
     def read_jsonfile(self):
         filename = 'cookies_file.json'
-        with open(filename,'r') as cookies_file:
-            test  = json.load(cookies_file)
+        with open(filename, 'r') as cookies_file:
+            test = json.load(cookies_file)
             print(test)
+
+
 if __name__ == '__main__':
-    GetCookies(driver).login()
+    driver = webdriver.Chrome()
+    test = GetCookies(driver)
+    test.open_url()
+    test.log()
     # GetCookies(driver).read_jsonfile()

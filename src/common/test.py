@@ -9,11 +9,14 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-# driver = webdriver.Chrome()
-# driver.get('https://www.baidu.com/')
-# sleep(1)
-# eles = driver.find_element(By.CSS_SELECTOR,'[id="kw"]')
-# # eles.send_keys("123")
+driver = webdriver.Chrome()
+driver.get('https://www.baidu.com/')
+sleep(1)
+eles = driver.find_element(By.CSS_SELECTOR, '[id="kw"]')
+driver.add_cookie()
+
+
+# eles.send_keys("123")
 # aa = driver.find_element(By.CSS_SELECTOR,'[id="su"]')
 # sleep(2)
 # print(type(aa))

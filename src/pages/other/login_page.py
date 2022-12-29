@@ -16,16 +16,22 @@ class LoginPage(BasePage):
     # 密码输入框
     passwd_input_box_ele = (By.CSS_SELECTOR, '[id="input-3"]')
     # 登录按钮
-    logined_btn = (By.CSS_SELECTOR,'[id="agreement"]')
+    logined_btn = (By.CSS_SELECTOR, '[id="agreement"]')
 
     # 登录方法
-    def login_function(self,username,passwd):
-
+    def login_function(self, username, passwd):
         self.find_element_explicitly(self.login_btn).click()
         self.find_element_explicitly(self.username_input_box_ele).send_keys(username)
         self.find_element_explicitly(self.passwd_input_box_ele).send_keys(passwd)
         self.find_element_explicitly(self.logined_btn).click()
 
+    # 登录页面有验证码
+    def shoudong_login_function(self, username, passwd):
+        self.find_element_explicitly(self.login_btn).click()
+        self.find_element_explicitly(self.username_input_box_ele).send_keys(username)
+        self.find_element_explicitly(self.passwd_input_box_ele).send_keys(passwd)
+        input("请输入验证码后按回车")
+        self.find_element_explicitly(self.logined_btn).click()
 
 if __name__ == '__main__':
     from selenium import webdriver
