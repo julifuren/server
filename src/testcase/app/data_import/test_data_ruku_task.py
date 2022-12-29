@@ -17,11 +17,11 @@ class CreateDataTaskBusinessCase(unittest.TestCase):
     def setUp(self) -> None:
         self.driver = webdriver.Chrome()
 
-        self.create_datatask_obj =  CreateDatataskBusiness(self.driver)
+        self.create_datatask_obj = CreateDatataskBusiness(self.driver)
 
         self.create_datatask_obj.open_url()
 
-        LoginBusiness(self.driver).login()
+        LoginBusiness(self.driver).login_add_cookies()
 
     def tearDown(self) -> None:
         self.driver.quit()
@@ -32,7 +32,7 @@ class CreateDataTaskBusinessCase(unittest.TestCase):
             self.create_datatask_obj.create_datatask(2)
             #获取
             status = self.create_datatask_obj.assert_taskname_text()
-            self.assertEqual(status,'完成')
+            self.assertEqual('完成', status)
 
         except:
             self.create_datatask_obj.get_screenshot('矢量2000入库测试')
@@ -42,15 +42,22 @@ class CreateDataTaskBusinessCase(unittest.TestCase):
         """矢量数据84坐标系入库测试"""
         try:
             self.create_datatask_obj.create_datatask(3)
-            #获取
+            # 获取
             status = self.create_datatask_obj.assert_taskname_text()
-            self.assertEqual(status,'完成')
+            self.assertEqual('完成', status)
 
         except:
             self.create_datatask_obj.get_screenshot('矢量84入库测试')
             raise
 
+    def test_cdt_dom_UTM_01(self):
+        """正射数据UTM投影入库测试"""
+        try:
+            self.create_datatask_obj.create_datatask(4)
+            # 获取
+            status = self.create_datatask_obj.assert_taskname_text()
+            self.assertEqual('完成', status)
 
-
-
-
+        except:
+            self.create_datatask_obj.get_screenshot('正射数据UTM投影')
+            raise

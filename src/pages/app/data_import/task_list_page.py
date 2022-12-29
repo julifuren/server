@@ -40,15 +40,21 @@ class TaskListPage(BasePage):
     ruku_next_btn_ele = (By.XPATH,'//span[text()="下一步"]')
 
     # 获取创建任务后的任务 状态
-    def get_ruku_status_text(self,taskname):
+    def get_ruku_status_text(self, taskname):
         """
         :param taskname:需要传入任务名称
         :return:
         """
-        ruku_status_ele = (By.XPATH,'//div[contains(text(),"{}")]/../..//span[text()="完成"]'.format(taskname))
-        #60s内查找任务的状态为完成的字段
-        return self.find_element_explicitly(ruku_status_ele,60).text
+        ruku_status_ele = (By.XPATH, '//div[contains(text(),"{}")]/../..//span[text()="完成"]'.format(taskname))
+        ruku_fail_status_ele = (By.XPATH, '//div[contains(text(),"{}")]/../../td[9]//span'.format(taskname))
 
+        # 60s内查找任务的状态为完成的字段
+        try:
+            aa = self.find_element_explicitly(ruku_status_ele, 3).text
+            return aa
+        except:
+            bb = self.find_element_explicitly(ruku_fail_status_ele).text
+            return bb
 
     # 点击创建接入任务
     def click_create_task_btn(self):
@@ -111,7 +117,9 @@ class TaskListPage(BasePage):
         ele = self.find_element_explicitly(self.datasat_btn_ele)
         hddatasat = ele.location_once_scrolled_into_view
         ele.click()
+        sleep(2)
         self.find_element_explicitly(self.datasat_popup_mysat_ele).click()
+        sleep(2)
 
     # 点击数据集弹窗 “全部” 页签
     def click_datasat_popup_teamsat(self):
@@ -119,7 +127,9 @@ class TaskListPage(BasePage):
         ele = self.find_element_explicitly(self.datasat_btn_ele)
         hddatasat = ele.location_once_scrolled_into_view
         ele.click()
+        sleep(2)
         self.find_element_explicitly(self.datasat_popup_teamsat_ele).click()
+        sleep(2)
 
 
     # 选择我的目录名 数据集名
@@ -128,12 +138,7 @@ class TaskListPage(BasePage):
         :param mydataset_name: 我的数据集名称
         :return:
         """
-        # 定位数据集按钮 滑动元素至可见
-        # ele = self.find_element_explicitly(self.datasat_btn_ele)
-        # hddatasat = ele.location_once_scrolled_into_view
-        # ele.click()
-        # self.driver.execute_script("arguments[0].click();", btn)
-        # 定位目录名称 滑动元素至可见并双击
+
         dirname = (By.XPATH,'//div[@class="middle"]//div[text()="{}"]'.format(directory_name))
         aa = (self.find_element_explicitly(dirname))
         hdmydatasat_name = aa.location_once_scrolled_into_view
