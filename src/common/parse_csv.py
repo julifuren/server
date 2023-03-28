@@ -44,6 +44,6 @@ class ParseCsv():
             raise Exception("文件或者路径不存在，请确认！！！")
 
 if __name__ == '__main__':
-    test = ParseCsv('data', 'biaoshi.csv').read_value_of_csv(2)
+    test = ParseCsv('data', 'login_data.csv').read_value_of_csv(2)
     print(test)
     print(type(test))

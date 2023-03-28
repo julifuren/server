@@ -13,11 +13,12 @@ from src.pages.app.app_page import AppPage
 from src.pages.base_page import BasePage
 from src.pages.other.home_page import HomePage
 from src.pages.other.login_page import LoginPage
+from src.common.parse_csv import ParseCsv
 
 
 class TaskListPage(BasePage):
     # 创建接入任务按钮
-    create_task_btn_ele = (By.XPATH,'//div[@class="main-button-bottom"]//span[text()="创建接入任务"]')
+    create_task_btn_ele = (By.XPATH, '//div[@class="main-button"]//span[text()="创建接入任务"]')
     # 入库类型下拉框
     ruku_data_type_dropbox = (By.XPATH,'//form[@class="el-form"]//input')
     # 任务名称
@@ -48,9 +49,9 @@ class TaskListPage(BasePage):
         ruku_status_ele = (By.XPATH, '//div[contains(text(),"{}")]/../..//span[text()="完成"]'.format(taskname))
         ruku_fail_status_ele = (By.XPATH, '//div[contains(text(),"{}")]/../../td[9]//span'.format(taskname))
 
-        # 60s内查找任务的状态为完成的字段
+        # 120s内查找任务的状态为完成的字段，未查到直接返回当前状态
         try:
-            aa = self.find_element_explicitly(ruku_status_ele, 3).text
+            aa = self.find_element_explicitly(ruku_status_ele, 120).text
             return aa
         except:
             bb = self.find_element_explicitly(ruku_fail_status_ele).text
@@ -59,6 +60,7 @@ class TaskListPage(BasePage):
     # 点击创建接入任务
     def click_create_task_btn(self):
         self.find_element_explicitly(self.create_task_btn_ele).click()
+
 
     # 获取创建任务时的名称
     def get_taskname_text(self):
@@ -79,25 +81,36 @@ class TaskListPage(BasePage):
 
     #选择测试数据路径
     def choose_data_path_function(self,parent_file_name,son_file_name,data_filename):
-        #一级目录
-        parent_file_name11 = (By.XPATH,'//div[@class="middle"]//div[text()="{}"]'.format(parent_file_name))
-        #二级目录
-        son_file_name11 = (By.XPATH,'//div[@class="middle-top flex-space-between"]//div[text()="{}"]'.format(son_file_name))
-        #数据文件名
-        data_file_name11 = (By.XPATH,'//div[@class="middle"]//div[text()="{}"]'.format(data_filename))
+        # 一级目录
+        parent_file_name11 = (By.XPATH, '//div[@class="middle"]//div[text()="{}"]'.format(parent_file_name))
+        # 二级目录
+        son_file_name11 = (
+        By.XPATH, '//div[@class="middle-top flex-space-between"]//div[text()="{}"]'.format(son_file_name))
+        # 数据文件名
+        data_file_name11 = (By.XPATH, '//div[@class="middle"]//div[text()="{}"]'.format(data_filename))
 
         # 点击扫描目录按钮
-        self.find_element_explicitly(self.scan_dircetory_btn_ele).click()
+        scan_dircetory = self.find_element_explicitly(self.scan_dircetory_btn_ele)
+        hdmydatasat_name = scan_dircetory.location_once_scrolled_into_view
+        scan_dircetory.click()
 
-        # 双击一级目录
-        aa = self.find_element_explicitly(parent_file_name11)
-        hdmydatasat_name = aa.location_once_scrolled_into_view
-        ActionChains(self.driver).double_click(aa).perform()
+        try:
+            # 双击一级目录
+            aa = self.find_element_explicitly(parent_file_name11)
+            hdmydatasat_name = aa.location_once_scrolled_into_view
+            ActionChains(self.driver).double_click(aa).perform()
+        except BaseException:
+            print("未找到{}一级目录".format(parent_file_name))
+            raise
 
-        # 双击二级目录
-        bb = self.find_element_explicitly(son_file_name11)
-        hdmydatasat_name1 = bb.location_once_scrolled_into_view
-        ActionChains(self.driver).double_click(bb).perform()
+        try:
+            # 双击二级目录
+            bb = self.find_element_explicitly(son_file_name11)
+            hdmydatasat_name1 = bb.location_once_scrolled_into_view
+            ActionChains(self.driver).double_click(bb).perform()
+        except BaseException:
+            print("未找到{}二级目录".format(son_file_name))
+            raise
 
         # 单击数据文件
         sleep(1)
@@ -107,9 +120,14 @@ class TaskListPage(BasePage):
         sleep(1)
         self.find_element_explicitly(self.scan_dircetory_popup_btn_ele).click()
 
-    #点击存储设备
-    def click_storage_device(self):
-        self.find_element_explicitly(self.storage_device).click()
+    # 点击存储设备
+    device_name = ParseCsv("config", 'device.csv').read_value_of_csv(1)['DeviceName']
+    print(device_name)
+
+    def click_storage_device(self, device_name):
+
+        storage_device = (By.XPATH, '//span[text()="{}"]'.format(device_name))
+        self.find_element_explicitly(storage_device).click()
 
     # 点击数据集弹窗 “我的” 页签
     def click_datasat_popup_mysat(self):
@@ -171,18 +189,18 @@ if __name__ == '__main__':
     test.login_function(username, passwd)
     HomePage(driver).click_app_btn()
     AppPage(driver).click_data_import_btn()
-    test=TaskListPage(driver)
+    test = TaskListPage(driver)
     test.click_create_task_btn()
     aa = test.get_taskname_text()
 
     test.select_ruku_data_type_function('矢量要素数据')
-    test.click_storage_device()
+    name = 'NFS-BuiltIn'
+    test.click_storage_device(name)
     # test.click_datasat_popup_mysat()
 
-    test.choose_data_path_function('ui-test','region面84.zip')
+    test.choose_data_path_function('ui-test', 'region面84.zip')
     test.click_datasat_popup_mysat()
-    test.choose_dataset_path_function('ui-test','矢量')
+    test.choose_dataset_path_function('ui-test', '矢量')
     test.click_ruku_next_btn()
     dd = test.get_ruku_status_text(aa)
     # print(dd)
-

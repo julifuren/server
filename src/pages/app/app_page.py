@@ -11,7 +11,7 @@ from src.pages.base_page import BasePage
 
 class AppPage(BasePage):
     # 数据导入按钮
-    data_import_btn_ele = (By.XPATH,'//p[text()="数据导入"]/../../div[@class="textdata-imger"]')
+    data_import_btn_ele = (By.XPATH, '//div[text()="数据导入"]/../../../..//span[contains(@style,"height: 30px")]')
 
     # 点击数据导入
     def click_data_import_btn(self):

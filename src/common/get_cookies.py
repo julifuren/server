@@ -22,9 +22,11 @@ class GetCookies(LoginBusiness):
         self.shoudong_login()
         sleep(4)
         cks = self.driver.get_cookies()
+        print('获取cookies成功')
         jsonCookies = json.dumps(cks)
         with open('cookies_file.json', 'w') as f:
             f.write(jsonCookies)
+        print('更新cookies文件成功')
         self.driver.quit()
 
     def read_jsonfile(self):

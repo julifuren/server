@@ -14,11 +14,16 @@ from src.pages.base_page import BasePage
 class HomePage(BasePage):
 
     # 应用 按钮
-    app_btn_ele = (By.XPATH,'//div[@class="nav-list"]//span[text()="应用"]')
+    app_btn_ele = (By.XPATH, '//div[@class="nav-list"]//span[text()="应用"]')
+    # 数据 按钮
+    data_btn_ele = (By.XPATH, '//div[@class="nav-list"]//span[text()="数据"]')
 
-    #点击 “应用”按钮
+    # 点击 “应用”按钮
     def click_app_btn(self):
         sleep(2)
         self.find_element_explicitly(self.app_btn_ele).click()
 
-
+    # 点击 “数据”按钮
+    def click_data_btn(self):
+        sleep(2)
+        self.find_element_explicitly(self.data_btn_ele).click()

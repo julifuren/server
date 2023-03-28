@@ -18,8 +18,8 @@ class BasePage():
     # 浏览器最大化，输入网址
     def open_url(self):
         self.driver.maximize_window()
-        # 需要获取到 url
-        url = ParseCsv("config", "url.csv").read_value_of_csv()["url_shouye"]
+        # 需要获取到 url,根据需要更改[url_XX]参数
+        url = ParseCsv("config", "url.csv").read_value_of_csv()["url_87"]
         # print(url)
         self.driver.get(url)
 

@@ -4,7 +4,7 @@
 # @Site : 
 # @File : create_datatask_business.py
 # @Software: PyCharm
-
+from time import sleep
 
 from src.pages.app.app_page import AppPage
 from src.pages.app.data_import.task_list_page import TaskListPage
@@ -23,6 +23,7 @@ class CreateDatataskBusiness(TaskListPage,AppPage,HomePage):
         self.click_app_btn()
         # 点击数据导入
         self.click_data_import_btn()
+        sleep(2)
         # 点击创建入库任务
         self.click_create_task_btn()
         #声明task_name为全局参数
@@ -31,8 +32,9 @@ class CreateDatataskBusiness(TaskListPage,AppPage,HomePage):
 
         # 选择入库数据类型
         self.select_ruku_data_type_function(data_task[0])
+        device_name = ParseCsv("config", 'device.csv').read_value_of_csv(1)['DeviceName']
         # 点击存储设备
-        self.click_storage_device()
+        self.click_storage_device(device_name)
 
         # 选择数据目录路径
         self.choose_data_path_function(data_task[1],data_task[2],data_task[3])
@@ -42,7 +44,7 @@ class CreateDatataskBusiness(TaskListPage,AppPage,HomePage):
         elif data_task[4] == "全部":
             self.click_datasat_popup_teamsat()
         else:
-            raise Exception("无此数据集分组按钮，请重新选择")
+            raise Exception("无{}数据集分组，请重新选择".format(data_task[4]))
 
         # 选择数据集路径
         self.choose_dataset_path_function(data_task[5],data_task[6])

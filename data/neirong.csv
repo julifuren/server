@@ -1,9 +1,0 @@
-field_name,field_title,field_type_name
-band_num,波段数,int4,f,,t,,,,,,t,,,
-band,波段名列表,varchar,f,,t,,,,,,t,,,
-byte_num,比特数,int8,f,,,,,,,,,,,
-scene_date,拍摄日期,timestamp,f,time_range,t,Date,,,,,t,,,
-resolution,空间分辨率,float8,f,,t,,,,,,t,,,
-temporal_resolution,时间分辨率,varchar,f,,t,,,,,,,,,
-cloud_percent,云量,float8,f,,t,,,,,,t,,,
-thematic_keywords,专题属性,varchar,f,,t,,,,,,t,,,

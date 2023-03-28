@@ -12,21 +12,21 @@ from src.pages.other.login_page import LoginPage
 from src.common.parse_csv import ParseCsv
 
 
-# 整合登录业务
+# 整合登录业务，登录方法login_X根据实际业务定义
 class LoginBusiness(LoginPage):
 
-    # 实现登录方法
-    def login(self):
+    # 使用server账户登录
+    def login_2(self):
         logindata = ParseCsv("data", "login_data.csv").read_value_of_csv(2)
         self.login_function(logindata[0], logindata[1])
 
-<<<<<<< HEAD
-    # 获取cookies，分支测试
-    def get_cookies_vule(self):
-        self.login()
-=======
-    # 有验证码获取cookies时登录
-    def shoudong_login(self):
+    # 使用租户管理员a123456账户登录
+    def login_3(self):
+        logindata = ParseCsv("data", "login_data.csv").read_value_of_csv(3)
+        self.login_function(logindata[0], logindata[1])
+
+    # 有验证码使用server账户cookies登录
+    def login_cookies(self):
         logindata = ParseCsv("data", "login_data.csv").read_value_of_csv(2)
         self.shoudong_login_function(logindata[0], logindata[1])
 
@@ -42,7 +42,6 @@ class LoginBusiness(LoginPage):
         for cookie in test:
             self.driver.add_cookie(cookie)
         self.open_url()
->>>>>>> master
 
 
 if __name__ == '__main__':
@@ -50,11 +49,10 @@ if __name__ == '__main__':
     from src.common.parse_csv import ParseCsv
 
     driver = webdriver.Chrome()
-<<<<<<< HEAD
+
     test = LoginPage(driver)
     test.open_url()
     LoginBusiness(driver).login()
-=======
+
     test = LoginBusiness(driver)
     test.login_add_cookies()
->>>>>>> master

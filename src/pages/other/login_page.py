@@ -20,7 +20,7 @@ class LoginPage(BasePage):
 
     # 登录方法
     def login_function(self, username, passwd):
-        self.find_element_explicitly(self.login_btn).click()
+        # self.find_element_explicitly(self.login_btn).click()
         self.find_element_explicitly(self.username_input_box_ele).send_keys(username)
         self.find_element_explicitly(self.passwd_input_box_ele).send_keys(passwd)
         self.find_element_explicitly(self.logined_btn).click()
