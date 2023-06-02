@@ -18,7 +18,7 @@ from src.common.parse_csv import ParseCsv
 
 class TaskListPage(BasePage):
     # 创建接入任务按钮
-    create_task_btn_ele = (By.XPATH, '//div[@class="main-button"]//span[text()="创建接入任务"]')
+    create_task_btn_ele = (By.XPATH, '//div[@class="main-button"]//span[text()="创建接入任务"]/..')
     # 入库类型下拉框
     ruku_data_type_dropbox = (By.XPATH,'//form[@class="el-form"]//input')
     # 任务名称
@@ -59,7 +59,9 @@ class TaskListPage(BasePage):
 
     # 点击创建接入任务
     def click_create_task_btn(self):
-        self.find_element_explicitly(self.create_task_btn_ele).click()
+
+        ele = self.find_element_explicitly(self.create_task_btn_ele)
+        self.driver.execute_script("arguments[0].click();", ele)
 
 
     # 获取创建任务时的名称
@@ -122,7 +124,6 @@ class TaskListPage(BasePage):
 
     # 点击存储设备
     device_name = ParseCsv("config", 'device.csv').read_value_of_csv(1)['DeviceName']
-    print(device_name)
 
     def click_storage_device(self, device_name):
 
@@ -179,28 +180,4 @@ if __name__ == '__main__':
     from selenium import webdriver
     from src.common.parse_csv import ParseCsv
 
-    driver = webdriver.Chrome()
 
-    test = LoginPage(driver)
-    username = ParseCsv("data", "login_data.csv").read_value_of_csv(2)[0]
-    passwd = ParseCsv("data", "login_data.csv").read_value_of_csv(2)[1]
-    print(username, passwd)
-    test.open_url()
-    test.login_function(username, passwd)
-    HomePage(driver).click_app_btn()
-    AppPage(driver).click_data_import_btn()
-    test = TaskListPage(driver)
-    test.click_create_task_btn()
-    aa = test.get_taskname_text()
-
-    test.select_ruku_data_type_function('矢量要素数据')
-    name = 'NFS-BuiltIn'
-    test.click_storage_device(name)
-    # test.click_datasat_popup_mysat()
-
-    test.choose_data_path_function('ui-test', 'region面84.zip')
-    test.click_datasat_popup_mysat()
-    test.choose_dataset_path_function('ui-test', '矢量')
-    test.click_ruku_next_btn()
-    dd = test.get_ruku_status_text(aa)
-    # print(dd)

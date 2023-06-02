@@ -8,19 +8,24 @@ import unittest
 
 from BeautifulReport import BeautifulReport
 from src.common.common_operation import common_operate_obj
+from src.testcase.data.test_create_Dataset import CreateDataSetCase
 
-#获取测试用例路径
+# 获取测试用例路径
 testcase_path = os.path.join(common_operate_obj.get_project_path(), "src", "testcase")
 
 # 获取到测试套件
-suite = unittest.defaultTestLoader.discover(testcase_path)
+# suite = unittest.defaultTestLoader.discover(testcase_path)
+
+# 构造测试数据集
+suite = unittest.TestSuite()
+suite.addTest(CreateDataSetCase('test_create_set_01'))
+# suite.addTest(TestBdd("test_aaa"))
+# suite.addTest(TestBdd("test_ccc"))
+# suite.addTest(TestAdd("test_bbb"))
 
 # 获取到 测试报告 存放的目录
 report_path = os.path.join(common_operate_obj.get_project_path(), "reports")
 
 # 执行测试用例，并生成测试报告。
-BeautifulReport(suite).report(description="server数据导入自动化测试报告", filename=f"report_{common_operate_obj.time_stamp()}", log_path=report_path)
-
-
-
-
+BeautifulReport(suite).report(description="server自动化测试报告", filename=f"report_{common_operate_obj.time_stamp()}",
+                              log_path=report_path)

@@ -59,6 +59,7 @@ class CreateDataTaskBusinessCase(unittest.TestCase):
         try:
             self.create_datatask_obj.create_datatask(7)
             status = self.create_datatask_obj.assert_taskname_text()
+
             self.assertEqual('完成', status)
 
         except:

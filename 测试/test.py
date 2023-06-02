@@ -6,8 +6,12 @@ from selenium.common.exceptions import NoSuchElementException
 try:
     a = "异常测试："
     print(a)
+    try:
+        print(b)
+        print(2)
 
-except NameError as msg:
+    except:
+        print('异常')
+
+except Exception as msg:
     print(msg)
-else:
-    print("没有异常时执行!")

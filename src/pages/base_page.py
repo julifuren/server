@@ -15,12 +15,14 @@ class BasePage():
     def __init__(self, driver):
         self.driver = driver
 
-    # 浏览器最大化，输入网址
+    # 浏览器最大化，解析网址
     def open_url(self):
         self.driver.maximize_window()
         # 需要获取到 url,根据需要更改[url_XX]参数
-        url = ParseCsv("config", "url.csv").read_value_of_csv()["url_87"]
+        url = ParseCsv("config", "url.csv").read_value_of_csv()["url"]
+        # url = ParseCsv("config", "url.csv").read_value_of_csv()["server-生产"]
         # print(url)
+
         self.driver.get(url)
 
 
@@ -36,6 +38,17 @@ class BasePage():
         # 返回等待方法
         return WebDriverWait(self.driver, timeout, poll_frequency).until(
             expected_conditions.presence_of_element_located(locator))
+
+    def find_elements_explicitly(self, locator, timeout=10, poll_frequency=0.5):
+        """
+        :param locator:          元素定位的表达式
+        :param timeout:          查找元素的超时时间
+        :param poll_frequency:   两次查找元素之间的间隔时间
+        :return:                 返回定位到的元素
+        """
+        # 返回等待方法
+        return WebDriverWait(self.driver, timeout, poll_frequency).until(
+            expected_conditions.presence_of_all_elements_located(locator))
 
     # 定义一个方法，用来实现 截图的操作。 截图整个屏幕。
     def get_screenshot(self, picture_name):
@@ -75,10 +88,14 @@ class BasePage():
         """
         Select(select_ele).select_by_visible_text(visible_text)
 
+    # 刷新浏览器
+    def refresh_driver(self):
+        self.driver.refresh()
+
 
 if __name__ == '__main__':
-    from selenium  import webdriver
+    from selenium import webdriver
+
     driver = webdriver.Chrome()
     test = BasePage(driver)
     test.open_url()
-
