@@ -8,6 +8,7 @@ from time import sleep
 
 from selenium.webdriver.common.by import By
 
+from src.common.yanzheng import parse_yanzheng
 from src.pages.base_page import BasePage
 
 
@@ -19,35 +20,28 @@ class LoginPage(BasePage):
     username_input_box_ele = (By.CSS_SELECTOR, '[id="input-1"]')
     # 密码输入框
     passwd_input_box_ele = (By.CSS_SELECTOR, '[id="input-3"]')
+    # 验证码输入框
+    yanzheng_input_box_ele = (By.CSS_SELECTOR, '[id="input-2"]')
     # 登录按钮
     logined_btn = (By.CSS_SELECTOR, '[id="agreement"]')
 
-
-    # 登录方法
-    def login_function(self, username, passwd):
-        self.find_element_explicitly(self.login_btn).click()
+    # 封装登录
+    def login_server(self, username, passwd):
         self.find_element_explicitly(self.username_input_box_ele).send_keys(username)
         self.find_element_explicitly(self.passwd_input_box_ele).send_keys(passwd)
-        self.find_element_explicitly(self.logined_btn).click()
-
-    # 登录页面有验证码
-    def login_cok_function(self, username, passwd):
-        self.find_element_explicitly(self.login_btn).click()
-        self.find_element_explicitly(self.username_input_box_ele).send_keys(username)
-        self.find_element_explicitly(self.passwd_input_box_ele).send_keys(passwd)
-        sleep(5)
-        input("请输入验证码后按回车")
+        yanzhegnma = parse_yanzheng()
+        self.find_element_explicitly(self.yanzheng_input_box_ele).send_keys(yanzhegnma)
         self.find_element_explicitly(self.logined_btn).click()
 
 
 if __name__ == '__main__':
     from selenium import webdriver
     from src.common.parse_csv import ParseCsv
+
     driver = webdriver.Chrome()
     test = LoginPage(driver)
-    username = ParseCsv("data","login_data.csv").read_value_of_csv(2)[0]
-    passwd = ParseCsv("data","login_data.csv").read_value_of_csv(2)[1]
-    print(username,passwd)
+    username = ParseCsv("data", "login_data.csv").read_value_of_csv(2)[0]
+    passwd = ParseCsv("data", "login_data.csv").read_value_of_csv(2)[1]
+    print(username, passwd)
     test.open_url()
-    test.login_function(username,passwd)
-
+    test.login_server(username, passwd)

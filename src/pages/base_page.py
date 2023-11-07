@@ -39,6 +39,12 @@ class BasePage():
         return WebDriverWait(self.driver, timeout, poll_frequency).until(
             expected_conditions.presence_of_element_located(locator))
 
+    def find_not_element_explicity(self, locator, timeout=30, poll_frequency=0.5):
+        return WebDriverWait(self.driver, timeout, poll_frequency).until_not(
+            expected_conditions.presence_of_element_located(locator), '数据导入超时，请查看')
+
+    # wait.until_not(EC.presence_of_element_located((By.XPATH, "XPATH_OF_DATA_IMPORT_STATUS")), "数据导入中超时")
+
     def find_elements_explicitly(self, locator, timeout=10, poll_frequency=0.5):
         """
         :param locator:          元素定位的表达式

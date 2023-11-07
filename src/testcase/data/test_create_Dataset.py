@@ -19,7 +19,7 @@ class CreateDataSetCase(unittest.TestCase):
         cls.driver = webdriver.Chrome()
         cls.create_datatask_obj = CreateDataSetBusiness(cls.driver)
         cls.create_datatask_obj.open_url()
-        LoginBusiness(cls.driver).login_3()
+        LoginBusiness(cls.driver).login_judge('1')
 
     @classmethod
     def tearDownClass(cls):

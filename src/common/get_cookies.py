@@ -36,5 +36,5 @@ if __name__ == '__main__':
     driver = webdriver.Chrome()
     test = GetCookies(driver)
     test.open_url()
-    test.log('server', 'officialpiesat@123')
+    test.log('18729966516', '123456')
     # GetCookies(driver).read_jsonfile()
