@@ -33,7 +33,7 @@ class DataPage(BasePage):
     # 需要点击的数据目录
     dirname_ele = (By.XPATH, '//span[text()="ui-test"]/../../preceding-sibling::span')
     # 需要点击的数据集
-    setname_ele = (By.XPATH, '//span[text()="矢量" and @class="dataset-span"]')
+    setname_ele = (By.XPATH, '//span[text()="综合数据" and @class="dataset-span"]')
     # 导航栏添加数据图标
     add_data_icr_ele = (By.CSS_SELECTOR, '[class="btn-item"]:nth-child(2) [class="el-image el-tooltip"]')
     # 添加数据弹窗通过本地文件上传
@@ -54,9 +54,10 @@ class DataPage(BasePage):
     data_object_ele = (By.XPATH, '//span[text()="region-GK"]')
     # 上传任务状态文本
     upload_text = (By.CSS_SELECTOR, '[class="init-store-status-text"]')
-
     # 矢量数据文件下拉框
     data_type_select = (By.XPATH, '//div[@class="upload-container"]/div/div[@class="flex-start"]')
+    # 上传文件后弹窗中的文件名；
+    upload_file_status = (By.CSS_SELECTOR, '[class="el-icon-document"]')
 
     # 点击创建目录按钮
     def click_create_dir_btn(self):
@@ -125,10 +126,13 @@ class DataPage(BasePage):
     def click_import_btn_ele(self):
         self.find_element_explicitly(self.import_btn_ele, 20).click()
 
+    # 上传文件后查找弹窗中的文件名，确保文件加载成功
+    def get_upload_file_status(self):
+        self.find_element_explicitly(self.upload_file_status)
+
     # 获取100%的进度条
-    def get_progress_bar_text(self):
-        aa = self.find_element_explicitly(self.progress_bar_text).text
-        return aa
+    def get_progress_bar_text(self, timeout):
+        self.find_element_explicitly(self.progress_bar_text, timeout=timeout)
 
     # 获取任务状态
     def get_import_status(self):
@@ -141,34 +145,40 @@ class DataPage(BasePage):
         self.find_element_explicitly(self.data_object_ele, 30)
 
     # 监控上传任务弹窗状态
-    def get_upload_text(self):
+    def get_upload_text(self, timeout=30):
+        """
+
+        :param timeout: 数据导入默认超时时间30s
+        :return:
+        """
         # 先定位任务状态
         self.find_element_explicitly(self.upload_text)
         # 对任务状态监控直到消失
-        self.find_not_element_explicity(self.upload_text)
-        print('导入成功')
+        try:
+            self.find_not_element_explicity(self.upload_text, timeout=timeout)
+            return '导入成功'
+        except:
+            return self.find_element_explicitly(self.upload_text).text
 
     def choose_data_type(self, data_type):
         self.find_element_explicitly(self.data_type_select).click()
-
         # 选择不同的类型
         data_type_to_xpath = {
             "影像或栅格文件": '//strong[text()="影像或栅格文件"]',
-            "矢量数据文件": '//strong[text()=""矢量数据文件"]',
-            "JSON格式矢量数据文件": '//strong[text()="//strong[text()="JSON格式矢量数据文件"]"]',
-            "地理数据库文件": '//strong[text()="//strong[text()="地理数据库文件"]"]',
-            "文档文件": '//strong[text()="//strong[text()="文档文件"]"]',
-            "多媒体文件": '//strong[text()="//strong[text()="多媒体文件"]"]',
-            "数字高程模型": '//strong[text()="//strong[text()="数字高程模型"]"]',
-            "倾斜摄影模型": '//strong[text()="//strong[text()="倾斜摄影模型"]"]',
-            "地图瓦片": '//strong[text()="//strong[text()="地图瓦片"]"]'
+            "矢量数据文件": '//strong[text()="矢量数据文件"]',
+            "JSON格式矢量数据文件": '//strong[text()="JSON格式矢量数据文件"]',
+            "地理数据库文件": '//strong[text()="地理数据库文件"]',
+            "文档文件": '//strong[text()="文档文件"]',
+            "多媒体文件": '//strong[text()="多媒体文件"]',
+            "数字高程模型": '//strong[text()="数字高程模型"]',
+            "倾斜摄影模型": '//strong[text()="倾斜摄影模型"]',
+            "地图瓦片": '//strong[text()="地图瓦片"]'
         }
         # 数据类型元素
         data_type_ele = (By.XPATH, data_type_to_xpath[data_type])
 
         # 点击指定的类型
         self.find_element_explicitly(data_type_ele).click()
-        # ActionChains(self.driver).move_to_element(ele).perform()
 
 
 if __name__ == '__main__':

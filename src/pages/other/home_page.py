@@ -17,6 +17,9 @@ class HomePage(BasePage):
     app_btn_ele = (By.XPATH, '//div[@class="nav-list"]//span[text()="应用"]')
     # 数据 按钮
     data_btn_ele = (By.XPATH, '//span[@class="item-text" and text()="数据"]')
+    # 集市 按钮
+    market_btn_ele = (By.XPATH, '//span[@class="item-text" and text()="集市"]')
+
     # 首页欢迎字段
     huanying_ele = (By.XPATH, '//*[contains(text(),"欢迎来到")]')
 

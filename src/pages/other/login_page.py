@@ -25,7 +25,7 @@ class LoginPage(BasePage):
     # 登录按钮
     logined_btn = (By.CSS_SELECTOR, '[id="agreement"]')
 
-    # 封装登录
+    # 封装登录-有验证码
     def login_server(self, username, passwd):
         self.find_element_explicitly(self.username_input_box_ele).send_keys(username)
         self.find_element_explicitly(self.passwd_input_box_ele).send_keys(passwd)
@@ -33,6 +33,11 @@ class LoginPage(BasePage):
         self.find_element_explicitly(self.yanzheng_input_box_ele).send_keys(yanzhegnma)
         self.find_element_explicitly(self.logined_btn).click()
 
+    # 封装登录-私有化无验证码
+    def login_syh(self, username, passwd):
+        self.find_element_explicitly(self.username_input_box_ele).send_keys(username)
+        self.find_element_explicitly(self.passwd_input_box_ele).send_keys(passwd)
+        self.find_element_explicitly(self.logined_btn).click()
 
 if __name__ == '__main__':
     from selenium import webdriver

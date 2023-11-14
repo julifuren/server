@@ -4,28 +4,26 @@
 # @File    : runner.py
 # @Software: PyCharm
 import os
-import unittest
-
-from BeautifulReport import BeautifulReport
 from src.common.common_operation import common_operate_obj
-from src.testcase.data.test_create_Dataset import CreateDataSetCase
+import unittest
+from BeautifulReport import BeautifulReport
 
-# 获取测试用例路径
-testcase_path = os.path.join(common_operate_obj.get_project_path(), "src", "testcase")
+# 用例存放位置
+test_case_path = r"D:\PythonTest\PIE_Server\src\testcase\data"
 
-# 获取到测试套件
-# suite = unittest.defaultTestLoader.discover(testcase_path)
+# 测试报告存放位置
+log_path = r'D:\PythonTest\PIE_Server\reports'
 
-# 构造测试数据集
-suite = unittest.TestSuite()
-suite.addTest(CreateDataSetCase('test_create_set_01'))
-# suite.addTest(TestBdd("test_aaa"))
-# suite.addTest(TestBdd("test_ccc"))
-# suite.addTest(TestAdd("test_bbb"))
+# 测试报告名称
+filename = f"report_{common_operate_obj.time_stamp()}"
 
-# 获取到 测试报告 存放的目录
-report_path = os.path.join(common_operate_obj.get_project_path(), "reports")
+# 用例名称
+description = 'server自动化测试用例'
 
-# 执行测试用例，并生成测试报告。
-BeautifulReport(suite).report(description="server自动化测试报告", filename=f"report_{common_operate_obj.time_stamp()}",
-                              log_path=report_path)
+# 需要执行哪些用例，如果目录下的全部，可以改为"*.py"，如果是部分带test后缀的，可以改为"*test.py"
+pattern = "test_upload_data.py"
+
+if __name__ == '__main__':
+    test_suite = unittest.defaultTestLoader.discover(test_case_path, pattern=pattern)
+    result = BeautifulReport(test_suite)
+    result.report(filename=filename, description=description, log_path=log_path)
