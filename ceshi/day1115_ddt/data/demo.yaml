@@ -1,0 +1,19 @@
+- common: &default
+    name:
+      '小王'
+    age:
+      18
+    num:
+      123456
+  user:
+    test01
+  pwd:
+    1111
+
+- common:
+    <<: *default
+
+  user:
+    test02
+  pwd:
+    2222

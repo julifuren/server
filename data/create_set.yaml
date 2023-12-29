@@ -1,0 +1,44 @@
+case1:
+  data_dir: ui-test
+  data_set: '矢量'
+
+case2:
+  data_dir: ui-test
+  data_set: '正射'
+
+case3:
+  data_dir: ui-test
+  data_set: 'json'
+
+case4:
+  data_dir: ui-test
+  data_set: '地理数据库'
+
+case5:
+  data_dir: ui-test
+  data_set: '坐标文件'
+
+case6:
+  data_dir: ui-test
+  data_set: '文档文件'
+
+case7:
+  data_dir: ui-test
+  data_set: '多媒体'
+
+case8:
+  data_dir: ui-test
+  data_set: 'DEM'
+
+case9:
+  data_dir: ui-test
+  data_set: '倾斜摄影'
+
+case10:
+  data_dir: ui-test
+  data_set: '地图瓦片'
+
+case11:
+  data_dir: ui-test
+  data_set: '综合数据'
+
