@@ -21,9 +21,12 @@ filename = f"report_{common_operate_obj.time_stamp()}"
 description = 'server自动化测试用例'
 
 # 需要执行哪些用例，如果目录下的全部，可以改为"*.py"，如果是部分带test后缀的，可以改为"*test.py"
-pattern = "test_upload_data.py"
+pattern = "*.py"
 
 if __name__ == '__main__':
     test_suite = unittest.defaultTestLoader.discover(test_case_path, pattern=pattern)
     result = BeautifulReport(test_suite)
     result.report(filename=filename, description=description, log_path=log_path)
+
+    # suite = unittest.TestSuite()
+    # suite.addTest()

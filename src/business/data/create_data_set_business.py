@@ -6,7 +6,7 @@
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 
-from src.common.parse_file import ParseYaml
+from src.common.parse_file import ParseFile
 from src.pages.data.data_page import DataPage
 from src.pages.other.home_page import HomePage
 
@@ -15,7 +15,7 @@ class CreateDataSetBusiness(DataPage, HomePage):
 
     def create_set(self, case):
 
-        data = ParseYaml('data', 'create_set.yaml').read_value_of_yaml()
+        data = ParseFile('data', 'create_set.yaml').read_value_of_yaml()
         # 点击数据按钮
         self.click_data_btn()
         dirname = data[case]['data_dir']

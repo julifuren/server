@@ -8,7 +8,7 @@ from time import sleep
 
 from src.pages.ywgl.type_management.type_management_page import TypeManagementPage
 from src.pages.ywgl.type_management.attribute_page import AttributePage
-from src.common.parse_csv import ParseCsv
+from src.common.parse_file import ParseFile
 from src.pages.other.home_page import HomePage
 
 class AddBiaoShi(TypeManagementPage,AttributePage):
@@ -28,7 +28,7 @@ class AddBiaoShi(TypeManagementPage,AttributePage):
         self.click_vlue_1()
 
     def input_infer(self,row):
-        add_type_management_data = ParseCsv('data', 'biaoshi.csv').read_value_of_csv(row)
+        add_type_management_data = ParseFile('data', 'biaoshi.csv').read_value_of_csv(row)
         # 编辑元数据 输入名称
         self.input_name_text_ele(add_type_management_data[0])
         sleep(0.5)

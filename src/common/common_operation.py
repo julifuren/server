@@ -7,8 +7,10 @@
 import os
 import time
 import warnings
-# 这里只能导入的是模块。不能直接导入 该模块（parse_csv.py）中的类。
-from src.common import parse_csv
+import pyautogui
+
+# 这里只能导入的是模块。不能直接导入 该模块（parse_file.py）中的类。
+from src.common import parse_file
 # python自带的插件，win32api是用来模拟键盘操作
 import win32api
 # python自带的插件，win32con是用来控制键盘
@@ -53,6 +55,21 @@ class CommonOperate():
         win32api.keybd_event(13, 0, win32con.KEYEVENTF_KEYUP, 0)
         time.sleep(2)
 
+    # def uploadWinFile(self, filepath):
+    #     '''
+    #     通过Windows系统上传文件
+    #     '''
+    #     try:
+    #         pyautogui.
+    #         pyautogui.write(filepath)  # 输入文件绝对路径
+    #         # print(filepath)
+    #         time.sleep(2)
+    #         pyautogui.press('enter', 2)  # 按2次回车键（按2次是为了防止出错）
+    #     except Exception as e:
+    #         # print(e)
+    #         raise e
+    #     else:
+    #         return filepath
 
 # 为了避免多次实例化占用内存空间，可以提前实例化一个对象出来。只需要在这里实例化一次即可。
 common_operate_obj = CommonOperate()

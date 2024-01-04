@@ -1,31 +1,20 @@
-import time
+import unittest
 
 
-#
-# def baiyu():
-#     print("我是攻城狮白玉")
-#     time.sleep(2)
-#
-#
-# def count_time(func):
-#     def wrapper():
-#         t1 = time.time()
-#         func()
-#         print("执行时间为：", time.time() - t1)
-#
-#     return wrapper
-#
-#
-# if __name__ == '__main__':
-#     baiyu = count_time(baiyu)  # 因为装饰器 count_time(baiyu) 返回的时函数对象 wrapper，这条语句相当于  baiyu = wrapper
-#     baiyu()  # 执行baiyu()就相当于执行wrapper()
+class MyTestCase(unittest.TestCase):
 
-def test01():
-    def test02():
-        print("222")
+    def test_case1(self):
+        # 你的用例1的测试代码
+        result = False  # 假设用例1执行成功，这里需要替换成实际的判断条件
 
-    print('111')
-    return test02()
+        # 断言用例1是否通过
+        self.assertTrue(result, "用例1执行失败")
+
+    @unittest.skipIf(test_case1.__doc__ == "用例1执行失败", "用例1未通过，跳过用例2")
+    def test_case2(self):
+        # 你的用例2的测试代码
+        pass
 
 
-a = test01()
+if __name__ == '__main__':
+    unittest.main()

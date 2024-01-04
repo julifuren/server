@@ -5,7 +5,6 @@
 # @Software: PyCharm
 from time import sleep
 
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -29,11 +28,10 @@ class DataPage(BasePage):
     # 创建按钮
     create_btn_ele = (By.XPATH, '//span[text()="创 建"]')
     # 点击创建后的提示信息
-    create_set_prompt_info_ele = (By.CSS_SELECTOR, '[id="app"]~div :last-child')
+    create_set_prompt_info_ele = (By.CSS_SELECTOR, '[class="el-message__content"]')
     # 需要点击的数据目录
     dirname_ele = (By.XPATH, '//span[text()="ui-test"]/../../preceding-sibling::span')
-    # 需要点击的数据集
-    setname_ele = (By.XPATH, '//span[text()="综合数据" and @class="dataset-span"]')
+
     # 导航栏添加数据图标
     add_data_icr_ele = (By.CSS_SELECTOR, '[class="btn-item"]:nth-child(2) [class="el-image el-tooltip"]')
     # 添加数据弹窗通过本地文件上传
@@ -41,7 +39,7 @@ class DataPage(BasePage):
     # 文件上传区域
     file_upload_ele = (By.XPATH, '//em')
     # 添加数据弹窗中’导入‘
-    import_btn_ele = (By.XPATH, '//span[text()="导 入"]')
+    import_btn_ele = (By.CSS_SELECTOR, '[class="add-data-footer flex-end"]>span div span')
     # 数据导入成功后提示信息
     import_success_text_ele = (By.XPATH, '//p[text()="入库成功"]')
     # 进度条100%
@@ -58,6 +56,8 @@ class DataPage(BasePage):
     data_type_select = (By.XPATH, '//div[@class="upload-container"]/div/div[@class="flex-start"]')
     # 上传文件后弹窗中的文件名；
     upload_file_status = (By.CSS_SELECTOR, '[class="el-icon-document"]')
+    # 第一个数据卡片
+    first_data_object_card_ele = (By.XPATH, '//div[@class="set-content-card"][1]//span[contains(text(),"region-GK")]')
 
     # 点击创建目录按钮
     def click_create_dir_btn(self):
@@ -71,7 +71,8 @@ class DataPage(BasePage):
     # 判断指定的目录是否存在
     def dermines_ele_exist(self, dirname):
         dirname_text_ele = (By.XPATH, '//span[text()="{}"]'.format(dirname))
-        return self.find_element_explicitly(dirname_text_ele, 2)
+
+        self.find_element_explicitly(dirname_text_ele, 2)
 
     # 点击创建数据集按钮
     def click_create_set_btn(self, hover_dirname):
@@ -84,7 +85,7 @@ class DataPage(BasePage):
         ele = self.find_element_explicitly(hover_dir_ele)
         ActionChains(self.driver).move_to_element(ele).perform()
         self.find_element_explicitly(self.plus_btn_ele).click()
-        self.find_element_explicitly(self.create_set_btn_ele).click()
+        # self.find_element_explicitly(self.create_set_btn_ele).click()
 
     # 输入数据集名称
     def input_setname(self, setname):
@@ -96,9 +97,8 @@ class DataPage(BasePage):
 
     # 获取创建数据集成功后的提示信息
     def get_info_createset_prompt(self):
-        ele = self.find_elements_explicitly(self.create_set_prompt_info_ele)[-1]
 
-        return ele.text
+        return self.find_element_explicitly(self.create_set_prompt_info_ele).text
 
     # 点击ui-test数据目录
     def click_dirname_ele(self):
@@ -106,8 +106,10 @@ class DataPage(BasePage):
         sleep(1)
 
     # 点击矢量数据集
-    def click_setname_ele(self):
-        self.find_element_explicitly(self.setname_ele).click()
+    def click_setname_ele(self, setname):
+        # 需要点击的数据集
+        setname_ele = (By.XPATH, '//span[text()="{}" and @class="dataset-span"]'.format(setname))
+        self.find_element_explicitly(setname_ele).click()
 
     # 点击导航栏数据添加按钮
     def click_add_data_icr_ele(self):
@@ -179,6 +181,12 @@ class DataPage(BasePage):
 
         # 点击指定的类型
         self.find_element_explicitly(data_type_ele).click()
+
+    # 点击第一个数据对象卡片,第一个数据卡片名称和data_name保持一致
+    def click_first_data_object(self, data_name):
+        first_data_object_card_ele = (
+        By.XPATH, '//div[@class="set-content-card"][1]//span[contains(text(),"{}")]'.format(data_name))
+        self.find_element_explicitly(first_data_object_card_ele).click()
 
 
 if __name__ == '__main__':

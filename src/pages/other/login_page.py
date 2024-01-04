@@ -41,12 +41,12 @@ class LoginPage(BasePage):
 
 if __name__ == '__main__':
     from selenium import webdriver
-    from src.common.parse_csv import ParseCsv
+    from src.common.parse_file import ParseFile
 
     driver = webdriver.Chrome()
     test = LoginPage(driver)
-    username = ParseCsv("data", "login_data.csv").read_value_of_csv(2)[0]
-    passwd = ParseCsv("data", "login_data.csv").read_value_of_csv(2)[1]
+    username = ParseFile("data", "login_data.csv").read_value_of_csv(2)[0]
+    passwd = ParseFile("data", "login_data.csv").read_value_of_csv(2)[1]
     print(username, passwd)
     test.open_url()
     test.login_server(username, passwd)

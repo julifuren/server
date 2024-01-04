@@ -13,7 +13,7 @@ from src.pages.app.app_page import AppPage
 from src.pages.base_page import BasePage
 from src.pages.other.home_page import HomePage
 from src.pages.other.login_page import LoginPage
-from src.common.parse_csv import ParseCsv
+from src.common.parse_file import ParseFile
 
 
 class TaskListPage(BasePage):
@@ -123,7 +123,7 @@ class TaskListPage(BasePage):
         self.find_element_explicitly(self.scan_dircetory_popup_btn_ele).click()
 
     # 点击存储设备
-    device_name = ParseCsv("config", 'device.csv').read_value_of_csv(1)['DeviceName']
+    device_name = ParseFile("config", 'device.csv').read_value_of_csv(1)['DeviceName']
 
     def click_storage_device(self, device_name):
 
@@ -178,6 +178,4 @@ class TaskListPage(BasePage):
 
 if __name__ == '__main__':
     from selenium import webdriver
-    from src.common.parse_csv import ParseCsv
-
-
+    from src.common.parse_file import ParseFile

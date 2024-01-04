@@ -40,4 +40,4 @@ class HomePage(BasePage):
 
     # 获取登录成功后的导航栏“数据”文本
     def get_text_of_data(self):
-        return self.find_element_explicitly(self.data_btn_ele, 3).text
+        return self.find_element_explicitly(self.data_btn_ele).text

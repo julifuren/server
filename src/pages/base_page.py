@@ -5,7 +5,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from src.common.common_operation import common_operate_obj
-from src.common.parse_csv import ParseCsv
+from src.common.parse_file import ParseFile
 import json
 from os.path import abspath,dirname
 
@@ -19,9 +19,7 @@ class BasePage():
     def open_url(self):
         self.driver.maximize_window()
         # 需要获取到 url,根据需要更改[url_XX]参数
-        url = ParseCsv("config", "url.csv").read_value_of_csv()["url"]
-        # url = ParseCsv("config", "url.csv").read_value_of_csv()["server-生产"]
-        # print(url)
+        url = ParseFile("config", "url.csv").read_value_of_csv()["url"]
 
         self.driver.get(url)
 

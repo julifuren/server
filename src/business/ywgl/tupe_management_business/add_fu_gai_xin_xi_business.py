@@ -7,7 +7,7 @@
 from time import sleep
 
 from src.pages.ywgl.type_management.type_management_page import TypeManagement
-from src.common.parse_csv import ParseCsv
+from src.common.parse_file import ParseFile
 
 class AddFuGaiXinXi(TypeManagement):
 
@@ -28,7 +28,7 @@ class AddFuGaiXinXi(TypeManagement):
         #点击覆盖信息
         self.click_vlue_2()
     def input_infer(self,row):
-        add_type_management_data = ParseCsv('data', 'fugai.csv').read_value_of_csv(row)
+        add_type_management_data = ParseFile('data', 'fugai.csv').read_value_of_csv(row)
         # 编辑元数据 输入名称
         self.input_name_text_ele(add_type_management_data[0])
         sleep(0.5)

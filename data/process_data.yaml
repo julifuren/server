@@ -1,4 +1,4 @@
 case1:
-  data_dir: ui-test #文件存在的目录
-  data_set: '矢量' #文件存在的数据集名称
-  data_name: 'region-GK' #数据名称
+  data_dir: 'ui-test'  #文件存在的目录
+  data_set: '矢量'   #文件存在的数据集名称
+  data_name: 'region-GK'  #数据名称

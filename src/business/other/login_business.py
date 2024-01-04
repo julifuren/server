@@ -11,7 +11,7 @@ from selenium.webdriver import ActionChains
 
 from src.pages.other.home_page import HomePage
 from src.pages.other.login_page import LoginPage
-from src.common.parse_csv import ParseCsv
+from src.common.parse_file import ParseFile
 import yaml
 from src.common.common_operation import common_operate_obj
 
@@ -29,7 +29,7 @@ class LoginBusiness(LoginPage, HomePage):
         :param row: 执行用例使用第几行的用户登录
         :return:
         """
-        login_data = ParseCsv("data", test_data_file).read_value_of_csv(row)
+        login_data = ParseFile("data", test_data_file).read_value_of_csv(row)
 
         # 判断验证码是否开启
         with open(self.config_name, 'r', encoding='utf-8') as yaml_file:
@@ -39,7 +39,7 @@ class LoginBusiness(LoginPage, HomePage):
             print('验证码登录')
 
             # 限制最大登录次数
-            max_attempts = 3
+            max_attempts = 5
             attempts = 0
             while attempts < max_attempts:
                 try:
@@ -47,7 +47,6 @@ class LoginBusiness(LoginPage, HomePage):
                     self.login_server(login_data[0], login_data[1])
                     self.get_text_of_data()
                     break
-
                 except:
                     attempts += 1
                     self.driver.refresh()
@@ -58,6 +57,10 @@ class LoginBusiness(LoginPage, HomePage):
         elif not config_data['yzm'][0]:
             print('无验证码登录')
             self.login_syh(login_data[0], login_data[1])
+            self.get_text_of_data()
+
+        else:
+            raise Exception("配置文件错误")
 
 
 if __name__ == '__main__':
@@ -67,3 +70,5 @@ if __name__ == '__main__':
     test = LoginBusiness(driver)
     test.open_url()
     test.login_function('login_data.csv', 2)
+    a = driver.get_cookies()
+    print(a[-1]['value'])

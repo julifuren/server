@@ -1,16 +1,31 @@
-import yaml
-
-with open('demo.yml', 'r', encoding='utf-8') as yaml_file:
-    config_data = yaml.safe_load(yaml_file)
-
-value1 = config_data
-
-print(value1)
+import unittest
 
 
-@file_data('demo.yaml')
-def test_search5(self, case):
-    search_key = case[0]["search_key"]
-    print("第五组测试用例：", search_key)
-    self.baidu_search(search_key)
-    self.assertEqual(self.driver.title, search_key + "_百度搜索")
+class TestDemo(unittest.TestCase):
+
+    def test_01(self):
+        try:
+            a = '测试用例1'
+            b = 1
+            self.assertEqual(a, '测试用例2')
+
+        except:
+            print('测试用例1失败')
+            raise
+
+    # @unittest.skipIf(test_case1.__doc__ == "用例1执行失败", "用例1未通过，跳过用例2")
+    # @unittest.skipIf(test_01.__doc__ == '测试用例1' , 'reason')
+    def test_02(self):
+        # print(self.test_01.__doc__)
+        try:
+            a = 1
+            b = 1
+            self.assertEqual(a, b)
+
+        except:
+            print('用例失败')
+            raise
+
+
+if __name__ == '__main__':
+    unittest.TestCase()

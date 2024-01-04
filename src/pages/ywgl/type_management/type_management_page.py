@@ -8,7 +8,7 @@ from time import sleep
 
 from selenium.webdriver.common.by import By
 
-from src.common.parse_csv import ParseCsv
+from src.common.parse_file import ParseFile
 from src.pages.base_page import BasePage
 
 

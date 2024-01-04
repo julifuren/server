@@ -7,7 +7,7 @@
 import time
 from src.business.other.login_business import LoginBusiness
 from src.common.common_operation import common_operate_obj, CommonOperate
-from src.common.parse_file import ParseCsv
+from src.common.parse_file import ParseFile
 from selenium.webdriver.common.by import By
 from src.pages.data.data_page import DataPage
 from src.pages.other.home_page import HomePage
@@ -20,14 +20,18 @@ class UploadDataBusiness(DataPage, HomePage):
     def uploaddata(self, row, timeout=5):
         """
         仅用于数据上传业务，传入的数据文件格式为CSV
-        :param row: upload_data.csv文件中的第几行
+        :param row: csv文件中的第几行
+        :param file_name: 数据上传的文件数据名
         :param timeout: 监测100%进度条的超时时间，默认5s
+
         :return:
         """
+
         # 解析上传的文件数据
-        upload_data = ParseCsv("data", "upload_data.csv").read_value_of_csv(row)
+        upload_data = ParseFile("data", 'upload_data.csv').read_value_of_csv(row)
         # 上传文件路径
         file_wenjian = common_operate_obj.get_project_path() + '\\files' + '\\' + upload_data[0] + '\\' + upload_data[1]
+
         self.click_data_btn()
         self.click_dirname_ele()
 
@@ -73,7 +77,7 @@ class UploadDataBusiness(DataPage, HomePage):
 if __name__ == '__main__':
     from selenium import webdriver
 
-    upload_data = ParseCsv('data', 'upload_data.csv').read_value_of_csv(2)
+    upload_data = ParseFile('data', 'upload_data.csv').read_value_of_csv(2)
     # 登录业务
     driver = webdriver.Chrome()
 

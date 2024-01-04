@@ -7,7 +7,7 @@
 from time import sleep
 
 from src.pages.ywgl.type_management.type_management_page import TypeManagementPage
-from src.common.parse_csv import ParseCsv
+from src.common.parse_file import ParseFile
 from src.pages.other.home_page import HomePage
 from src.pages.ywgl.type_management.attribute_page import AttributePage
 
@@ -32,7 +32,7 @@ class AddChuanGanQi(TypeManagementPage,AttributePage):
         #点击下拉框的传感器选项
         self.click_vlue_4()
     def input_infer(self,row):
-        add_type_management_data = ParseCsv('data', 'chuanganqi.csv').read_value_of_csv(row)
+        add_type_management_data = ParseFile('data', 'chuanganqi.csv').read_value_of_csv(row)
         # 编辑元数据 输入名称
         self.input_name_text_ele(add_type_management_data[0])
         sleep(0.5)

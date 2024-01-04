@@ -9,7 +9,7 @@ from time import sleep
 from src.pages.app.app_page import AppPage
 from src.pages.app.data_import.task_list_page import TaskListPage
 from src.pages.other.home_page import HomePage
-from src.common.parse_csv import ParseCsv
+from src.common.parse_file import ParseFile
 
 
 class CreateDatataskBusiness(TaskListPage,AppPage,HomePage):
@@ -18,7 +18,7 @@ class CreateDatataskBusiness(TaskListPage,AppPage,HomePage):
     def create_datatask(self,row):
 
         # 解析入库数据文件
-        data_task = ParseCsv("data","ruku_data_task.csv").read_value_of_csv(row)
+        data_task = ParseFile("data", "ruku_data_task.csv").read_value_of_csv(row)
         # 点击应用按钮
         self.click_app_btn()
         # 点击数据导入
@@ -32,7 +32,7 @@ class CreateDatataskBusiness(TaskListPage,AppPage,HomePage):
 
         # 选择入库数据类型
         self.select_ruku_data_type_function(data_task[0])
-        device_name = ParseCsv("config", 'device.csv').read_value_of_csv(1)['DeviceName']
+        device_name = ParseFile("config", 'device.csv').read_value_of_csv(1)['DeviceName']
         # 点击存储设备
         self.click_storage_device(device_name)
 
